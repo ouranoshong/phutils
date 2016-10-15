@@ -1,10 +1,10 @@
 ## Run on container environment
 #sudo: false
 
-cache:
-  directories:
-    - $HOME/.composer/cache
-    - vendor
+#cache:
+#  directories:
+#    - $HOME/.composer/cache
+#    - vendor
 
 language: php
 php:
