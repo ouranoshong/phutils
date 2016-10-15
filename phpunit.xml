@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit>
+    <testsuites>
+        <testsuite name="phutils">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist >
+            <directory suffix=".php">libs</directory>
+        </whitelist>
+    </filter>
+</phpunit>

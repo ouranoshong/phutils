@@ -1,0 +1,20 @@
+{
+    "name": "phutils/phutils",
+    "description": "A utils component collection",
+    "authors": [
+        {
+            "name": "ouranoshong",
+            "email": "ouranoshong@outlook.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "PhUtils\\": "./libs"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.6"
+    }
+}
