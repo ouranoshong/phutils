@@ -1,5 +1,5 @@
 ## Run on container environment
-sudo: false
+#sudo: false
 
 cache:
   directories:
