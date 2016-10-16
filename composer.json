@@ -2,7 +2,7 @@
     "name": "phutils/phutils",
     "type": "library",
     "keywords": ["utils"],
-    "description": "A utils component collection",
+    "description": "A php utils collection",
     "license": "MIT",
     "homepage": "https://github.com/ouranoshong/phutils",
     "authors": [
