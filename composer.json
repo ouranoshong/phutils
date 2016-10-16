@@ -1,6 +1,10 @@
 {
     "name": "phutils/phutils",
+    "type": "library",
+    "keywords": ["utils"],
     "description": "A utils component collection",
+    "license": "MIT",
+    "homepage": "https://github.com/ouranoshong/phutils",
     "authors": [
         {
             "name": "ouranoshong",
