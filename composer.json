@@ -11,8 +11,6 @@
             "email": "ouranoshong@outlook.com"
         }
     ],
-    "require": {
-    },
     "autoload": {
         "psr-4": {
             "PhUtils\\": "./libs"
