@@ -200,7 +200,7 @@ class LinkUtil
         elseif (substr($link,0,2)=="./")
         {
             $link=$url_parts["protocol"].$url_parts["host"].":".$url_parts["port"].$url_parts["path"].substr($link, 2);
-        }
+		}
 
         // 3. Link is an absolute Link with a given protocol and host (f.e. "http://..." or "android-app://...)
         // DO NOTHING
@@ -244,7 +244,7 @@ class LinkUtil
             $link = $url_parts["protocol"].$url_parts["host"].":".$url_parts["port"].$url_parts["path"].$url_parts["file"].$link;
         }
 
-        // 7. thats it, else the abs_path is simply PATH.LINK ...
+        // 8. thats it, else the abs_path is simply PATH.LINK ...
         else
         {
             $link = $url_parts["protocol"].$url_parts["host"].":".$url_parts["port"].$url_parts["path"].$link;
@@ -413,6 +413,7 @@ class LinkUtil
         {
             for ($x=1; $x<count($args); $x++)
             {
+
                 // Ist das Argument ein String, sprich ein Sortier-Feld?
                 if (is_string($args[$x]))
                 {
@@ -426,17 +427,21 @@ class LinkUtil
         // Argumente f�r array_multisort bilden
         for ($x=1; $x<count($args); $x++)
         {
+
             if (is_string($args[$x]))
             {
                 // Argument ist ein TMP-Array
                 $params[] = &${$args[$x]};
+
             }
             else
             {
                 // Argument ist ein Sort-Flag so wie z.B. "SORT_ASC"
                 $params[] = &$args[$x];
+
             }
         }
+
 
         // Der letzte Parameter ist immer das zu sortierende Array (Referenz!)
         $params[] = &$array;
