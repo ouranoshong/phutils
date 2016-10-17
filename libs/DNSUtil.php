@@ -14,15 +14,21 @@ class DNSUtil
     public static $HOST_IP_TABLE = [];
 
     public static function getIpByHostName($name = '') {
-        // If host already was queried
+
+        if (!$name) return null;
+
         if (isset(self::$HOST_IP_TABLE[$name]))
         {
             return self::$HOST_IP_TABLE[$name];
+
         } else {
+
             $ip = gethostbyname($name);
             self::$HOST_IP_TABLE[$name] = $ip;
             return $ip;
         }
+
+        return null;
     }
 
 }
