@@ -26,6 +26,7 @@ class LinkUtil
         $auth_username = (isset($parts["user"]) ? $parts["user"] : "");
         $auth_password = (isset($parts["pass"]) ? $parts["pass"] : "");
         $port = (isset($parts["port"]) ? $parts["port"] : "");
+        $fragment = (isset($parts['fragment']) ? $parts['fragment'] : "");
 
         // Host is case-insensitive
         $host = strtolower($host);
@@ -86,6 +87,8 @@ class LinkUtil
 
         $url_parts["auth_username"] = $auth_username;
         $url_parts["auth_password"] = $auth_password;
+
+        $url_parts["fragment"] = $fragment;
 
         return $url_parts;
     }
