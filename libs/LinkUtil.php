@@ -141,6 +141,8 @@ class LinkUtil
         // Put together the url
         $url = $url_parts["protocol"] . $auth_part . $url_parts["host"]. $port_part . $url_parts["path"] . $url_parts["file"] . $url_parts["query"];
 
+        if (isset($url_parts['fragment']) && $url_parts['fragment'] != '') $url .= '#'.$url_parts['fragment'];
+
         return $url;
     }
 
