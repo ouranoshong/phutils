@@ -9,14 +9,35 @@
 namespace PhUtils;
 
 
+/**
+ * Class Benchmark
+ *
+ * @package PhUtils
+ */
 class Benchmark
 {
+    /**
+     * @var array
+     */
     public static $benchmark_results = [];
+    /**
+     * @var array
+     */
     public static $benchmark_start_times = [];
+    /**
+     * @var array
+     */
     public static $benchmark_start_count = [];
+    /**
+     * @var array
+     */
     protected static $temporary_benchmarks = [];
 
 
+    /**
+     * @param      $identifier
+     * @param bool $temporary_benchmark
+     */
     public static function start($identifier, $temporary_benchmark = false)
     {
         self::$benchmark_start_times[$identifier] = self::getMicrotime();
@@ -31,12 +52,22 @@ class Benchmark
         }
     }
 
+    /**
+     * @param $identifier
+     *
+     * @return mixed
+     */
     public static function getCallCount($identifier)
     {
         return self::$benchmark_start_count[$identifier];
     }
 
 
+    /**
+     * @param $identifier
+     *
+     * @return float|null
+     */
     public static function stop($identifier)
     {
         if (isset(self::$benchmark_start_times[$identifier]))
@@ -52,6 +83,11 @@ class Benchmark
         return null;
     }
 
+    /**
+     * @param $identifier
+     *
+     * @return int|mixed
+     */
     public static function getElapsedTime($identifier)
     {
         if (isset(self::$benchmark_results[$identifier]))
@@ -63,6 +99,9 @@ class Benchmark
     }
 
 
+    /**
+     * @param $identifier
+     */
     public static function reset($identifier)
     {
         if (isset(self::$benchmark_results[$identifier]))
@@ -71,6 +110,9 @@ class Benchmark
         }
     }
 
+    /**
+     * @param array $retain_benchmarks
+     */
     public static function resetAll($retain_benchmarks = array())
     {
         // If no benchmarks should be retained
@@ -91,6 +133,9 @@ class Benchmark
         }
     }
 
+    /**
+     * @param string $linebreak
+     */
     public static function printAllBenchmarks($linebreak = "<br />")
     {
         @reset(self::$benchmark_results);
@@ -128,6 +173,9 @@ class Benchmark
         return microtime(true);
     }
 
+    /**
+     * @return array
+     */
     public static function getTemporary(){
         return self::$temporary_benchmarks;
     }

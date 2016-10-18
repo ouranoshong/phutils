@@ -9,15 +9,28 @@
 namespace PhUtils;
 
 
+/**
+ * Class EncodingUtil
+ *
+ * @package PhUtils
+ */
 class EncodingUtil
 {
-    public static function decodeGZipContent($content)
-    {
+    /**
+     * @param $content
+     *
+     * @return string
+     */
+    public static function decodeGZipContent($content) {
         return gzinflate(substr($content, 10, -8));
     }
 
-    public static function isGzipEncoded($content)
-    {
+    /**
+     * @param $content
+     *
+     * @return bool
+     */
+    public static function isGzipEncoded($content) {
         return substr($content, 0, 3) === "\x1f\x8b\x08";
     }
 

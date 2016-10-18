@@ -4,3 +4,9 @@
 
 # phutils
 a utils component collection
+
+# Collections
+* Benchmark
+* DNSUtil
+* EncodingUtil
+* LinkUtil

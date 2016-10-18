@@ -9,10 +9,23 @@
 namespace PhUtils;
 
 
+/**
+ * Class DNSUtil
+ *
+ * @package PhUtils
+ */
 class DNSUtil
 {
+    /**
+     * @var array
+     */
     public static $HOST_IP_TABLE = [];
 
+    /**
+     * @param string $name
+     *
+     * @return mixed|null|string
+     */
     public static function getIpByHostName($name = '') {
 
         if (!$name) return null;
