@@ -3,16 +3,13 @@
  * Created by PhpStorm.
  * User: hong
  * Date: 16-9-28
- * Time: 下午10:27
+ * Time: 下午10:27.
  */
 
 namespace PhUtils;
 
-
 /**
- * Class EncodingUtil
- *
- * @package PhUtils
+ * Class EncodingUtil.
  */
 class EncodingUtil
 {
@@ -21,7 +18,7 @@ class EncodingUtil
      *
      * @return string
      */
-    public static function decodeGZipContent($content) 
+    public static function decodeGZipContent($content)
     {
         return gzinflate(substr($content, 10, -8));
     }
@@ -31,7 +28,7 @@ class EncodingUtil
      *
      * @return bool
      */
-    public static function isGzipEncoded($content) 
+    public static function isGzipEncoded($content)
     {
         return substr($content, 0, 3) === "\x1f\x8b\x08";
     }
@@ -42,7 +39,8 @@ class EncodingUtil
      * Taken from http://www.php.net/manual/de/function.mb-detect-encoding.php
      * (comment from "prgss at bk dot ru")
      *
-     * @param  string $string The string
+     * @param string $string The string
+     *
      * @return bool TRUE if the string is UTF-8 encoded.
      */
     public static function isUtf8String($string)
@@ -53,15 +51,16 @@ class EncodingUtil
     }
 
     /**
-     * Decodes all HTML-entities in the given string including numeric and hexadecimal character references
+     * Decodes all HTML-entities in the given string including numeric and hexadecimal character references.
      *
-     * @param  string $string
+     * @param string $string
+     *
      * @return string
      */
     public static function decodeHtmlEntities($string)
     {
         // Entities-replacements
-        $entities = array ("'&(quot|#34);'i",
+        $entities = array("'&(quot|#34);'i",
             "'&(amp|#38);'i",
             "'&(lt|#60);'i",
             "'&(gt|#62);'i",
@@ -69,31 +68,30 @@ class EncodingUtil
             "'&(iexcl|#161);'i",
             "'&(cent|#162);'i",
             "'&(pound|#163);'i",
-            "'&(copy|#169);'i");
+            "'&(copy|#169);'i", );
 
-        $entitie_replacements = array ("\"",
-            "&",
-            "<",
-            ">",
-            " ",
+        $entitie_replacements = array('"',
+            '&',
+            '<',
+            '>',
+            ' ',
             chr(161),
             chr(162),
             chr(163),
-            chr(169));
-
+            chr(169), );
 
         $string = preg_replace($entities, $entitie_replacements, $string);
 
         // Numeric haracter reference replacement (non-HEX), like &#64; => "@"
         $string = preg_replace_callback(
-            "/&#([0-9]{1,4});/ i", function ($m) {
+            '/&#([0-9]{1,4});/ i', function ($m) {
                 return chr($m[1]);
             }, $string
         );
 
         // Numeric character reference replacement (HEX), like &#x2f; => "/"
         $string = preg_replace_callback(
-            "/&#x([0-9a-z]{2,4});/ i", function ($m) {
+            '/&#x([0-9a-z]{2,4});/ i', function ($m) {
                 return chr(hexdec($m[1]));
             }, $string
         );
