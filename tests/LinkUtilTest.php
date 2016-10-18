@@ -154,19 +154,28 @@ class LinkUtilTest extends \PHPUnit\Framework\TestCase
 
     public function testGetBaseUrlFromMetaTag() {
         $html = '<base href="http://www.w3school.com.cn/i/" />';
+        $html_none = '';
         $this->assertEquals(
             'http://www.w3school.com.cn/i/',
             \PhUtils\LinkUtil::getBaseUrlFromMetaTag($html)
         );
+
+        $this->assertNull(\PhUtils\LinkUtil::getBaseUrlFromMetaTag($html_none));
+
     }
 
     public function testGetRedirectURLFromHeader() {
         $header = 'location: '.$this->uri."\n";
 
+        $header_none = '';
+
         $this->assertEquals(
             $this->uri,
             \PhUtils\LinkUtil::getRedirectURLFromHeader($header)
         );
+
+        $this->assertNull(\PhUtils\LinkUtil::getRedirectURLFromHeader($header_none));
+
     }
 
     public function testCheckStringAgainstRegexArray() {
@@ -185,6 +194,8 @@ class LinkUtilTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('text/html',
             \PhUtils\LinkUtil::getHeaderValue($header, 'Content-Type'));
+
+        $this->assertNull(\PhUtils\LinkUtil::getHeaderValue($header, 'transfer'));
     }
 
     public function testGetRootUrl() {
@@ -306,7 +317,12 @@ class LinkUtilTest extends \PHPUnit\Framework\TestCase
 
         $html = '<meta name="keywords" content="HTML,ASP,PHP,SQL">';
 
+        $html_none = '';
+
         $this->assertEquals(['keywords'=> 'html,asp,php,sql'], \PhUtils\LinkUtil::getMetaTagAttributes($html));
+
+        $this->assertEmpty(\PhUtils\LinkUtil::getMetaTagAttributes($html_none));
+
     }
 
     public function testIsValidUrlString() {
