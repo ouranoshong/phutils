@@ -10,14 +10,17 @@ namespace PhUtils;
 
 class LinkUtil
 {
-    public static function parse($url) {
+    public static function parse($url) 
+    {
         // Protokoll der URL hinzuf�gen (da ansonsten parse_url nicht klarkommt)
-        if (!preg_match("#^[a-z0-9-]+://# i", $url))
+        if (!preg_match("#^[a-z0-9-]+://# i", $url)) {
             $url = "http://" . $url;
+        }
 
         $parts = @parse_url($url);
 
-        if (!isset($parts)) return null;
+        if (!isset($parts)) { return null;
+        }
 
         $protocol = $parts["scheme"]."://";
         $host = (isset($parts["host"]) ? $parts["host"] : "");
@@ -33,8 +36,7 @@ class LinkUtil
 
         // File
         preg_match("#^(.*/)([^/]*)$#", $path, $match); // Alles ab dem letzten "/"
-        if (isset($match[0]))
-        {
+        if (isset($match[0])) {
             $file = trim($match[2]);
             $path = trim($match[1]);
         }
@@ -46,8 +48,7 @@ class LinkUtil
         // The domainname from the host
         // Host: www.foo.com -> Domain: foo.com
         $parts = @explode(".", $host);
-        if (count($parts) <= 2)
-        {
+        if (count($parts) <= 2) {
             $domain = $host;
         }
         else if (preg_match("#^[0-9]+$#", str_replace(".", "", $host))) // IP
@@ -63,18 +64,21 @@ class LinkUtil
         // DEFAULT VALUES f�r protocol, path, port etc. (wenn noch nicht gesetzt)
 
         // Wenn Protokoll leer -> Protokoll ist "http://"
-        if ($protocol == "") $protocol="http://";
+        if ($protocol == "") { $protocol="http://";
+        }
 
         // Wenn Port leer -> Port setzen auf 80 or 443
         // (abh�ngig vom Protokoll)
-        if ($port == "")
-        {
-            if (strtolower($protocol) == "http://") $port=80;
-            if (strtolower($protocol) == "https://") $port=443;
+        if ($port == "") {
+            if (strtolower($protocol) == "http://") { $port=80;
+            }
+            if (strtolower($protocol) == "https://") { $port=443;
+            }
         }
 
         // Wenn Pfad leet -> Pfad ist "/"
-        if ($path=="") $path = "/";
+        if ($path=="") { $path = "/";
+        }
 
         // R�ckgabe-Array
         $url_parts["protocol"] = $protocol;
@@ -96,23 +100,28 @@ class LinkUtil
     public static function buildURLFromParts($url_parts, $normalize = false)
     {
         // Host has to be set aat least
-        if (!isset($url_parts["host"]))
-        {
+        if (!isset($url_parts["host"])) {
             throw new Exception("Cannot generate URL, host not specified!");
         }
 
-        if (!isset($url_parts["protocol"]) || $url_parts["protocol"] == "") $url_parts["protocol"] = "http://";
-        if (!isset($url_parts["port"])) $url_parts["port"]= 80;
-        if (!isset($url_parts["path"])) $url_parts["path"] = "";
-        if (!isset($url_parts["file"])) $url_parts["file"] = "";
-        if (!isset($url_parts["query"])) $url_parts["query"]= "";
-        if (!isset($url_parts["auth_username"])) $url_parts["auth_username"]= "";
-        if (!isset($url_parts["auth_password"])) $url_parts["auth_password"]= "";
+        if (!isset($url_parts["protocol"]) || $url_parts["protocol"] == "") { $url_parts["protocol"] = "http://";
+        }
+        if (!isset($url_parts["port"])) { $url_parts["port"]= 80;
+        }
+        if (!isset($url_parts["path"])) { $url_parts["path"] = "";
+        }
+        if (!isset($url_parts["file"])) { $url_parts["file"] = "";
+        }
+        if (!isset($url_parts["query"])) { $url_parts["query"]= "";
+        }
+        if (!isset($url_parts["auth_username"])) { $url_parts["auth_username"]= "";
+        }
+        if (!isset($url_parts["auth_password"])) { $url_parts["auth_password"]= "";
+        }
 
         // Autentication-part
         $auth_part = "";
-        if ($url_parts["auth_username"] != "" && $url_parts["auth_password"] != "")
-        {
+        if ($url_parts["auth_username"] != "" && $url_parts["auth_password"] != "") {
             $auth_part = $url_parts["auth_username"].":".$url_parts["auth_password"]."@";
         }
 
@@ -120,28 +129,28 @@ class LinkUtil
         $port_part = ":" . $url_parts["port"];
 
         // Normalize
-        if ($normalize == true)
-        {
-            if ($url_parts["protocol"] == "http://" && $url_parts["port"] == 80 ||
-                $url_parts["protocol"] == "https://" && $url_parts["port"] == 443)
-            {
+        if ($normalize == true) {
+            if ($url_parts["protocol"] == "http://" && $url_parts["port"] == 80 
+                || $url_parts["protocol"] == "https://" && $url_parts["port"] == 443
+            ) {
                 $port_part = "";
             }
 
             // Don't add port to links other than "http://" or "https://"
-            if ($url_parts["protocol"] != "http://" && $url_parts["protocol"] != "https://")
-            {
+            if ($url_parts["protocol"] != "http://" && $url_parts["protocol"] != "https://") {
                 $port_part = "";
             }
         }
 
         // If path is just a "/" -> remove it ("www.site.com/" -> "www.site.com")
-        if ($url_parts["path"] == "/" && $url_parts["file"] == "" && $url_parts["query"] == "") $url_parts["path"] = "";
+        if ($url_parts["path"] == "/" && $url_parts["file"] == "" && $url_parts["query"] == "") { $url_parts["path"] = "";
+        }
 
         // Put together the url
         $url = $url_parts["protocol"] . $auth_part . $url_parts["host"]. $port_part . $url_parts["path"] . $url_parts["file"] . $url_parts["query"];
 
-        if (isset($url_parts['fragment']) && $url_parts['fragment'] != '') $url .= '#'.$url_parts['fragment'];
+        if (isset($url_parts['fragment']) && $url_parts['fragment'] != '') { $url .= '#'.$url_parts['fragment'];
+        }
 
         return $url;
     }
@@ -151,14 +160,15 @@ class LinkUtil
      *
      * I.e. converts http://www.foo.com:80/path/ to http://www.foo.com/path/
      *
-     * @param string $url
+     * @param  string $url
      * @return string OR NULL on failure
      */
     public static function normalizeURL($url)
     {
         $url_parts = self::parse($url);
 
-        if ($url_parts == null) return null;
+        if ($url_parts == null) { return null;
+        }
 
         $url_normalized = self::buildURLFromParts($url_parts, true);
         return $url_normalized;
@@ -168,8 +178,9 @@ class LinkUtil
     public static function checkRegexPattern($pattern)
     {
         $check = @preg_match($pattern, "anything"); // thats the easy way to check a pattern ;)
-        if (is_integer($check) == false) return false;
-        else return true;
+        if (is_integer($check) == false) { return false;
+        } else { return true;
+        }
     }
 
     public static function buildURLFromLink($link, $url_parts)
@@ -184,47 +195,41 @@ class LinkUtil
         // Cases
 
         // Strange link like "//foo.htm" -> make it to "http://foo.html"
-        if (substr($link, 0, 2) == "//")
-        {
+        if (substr($link, 0, 2) == "//") {
             $link = "http:".$link;
         }
 
         // 1. relative link starts with "/" --> doc_root
         // "/index.html" -> "http://www.foo.com/index.html"
-        elseif (substr($link,0,1)=="/")
-        {
+        elseif (substr($link, 0, 1)=="/") {
             $link = $url_parts["protocol"].$url_parts["host"].":".$url_parts["port"].$link;
         }
 
         // 2. "./foo.htm" -> "foo.htm"
-        elseif (substr($link,0,2)=="./")
-        {
+        elseif (substr($link, 0, 2)=="./") {
             $link=$url_parts["protocol"].$url_parts["host"].":".$url_parts["port"].$url_parts["path"].substr($link, 2);
-		}
+        }
 
         // 3. Link is an absolute Link with a given protocol and host (f.e. "http://..." or "android-app://...)
         // DO NOTHING
-        elseif (preg_match("#^[a-z0-9-]{1,}(:\/\/)# i", $link))
-        {
+        elseif (preg_match("#^[a-z0-9-]{1,}(:\/\/)# i", $link)) {
             $link = $link;
         }
 
         // 4. Link is stuff like "javascript: ..." or something
-        elseif (preg_match("/^[a-zA-Z]{0,}:[^\/]{0,1}/", $link))
-        {
+        elseif (preg_match("/^[a-zA-Z]{0,}:[^\/]{0,1}/", $link)) {
             $link = "";
         }
 
         // 5. "../../foo.html" -> remove the last path from our actual path
         // and remove "../" from link at the same time until there are
         // no more "../" at the beginning of the link
-        elseif (substr($link, 0, 3)=="../")
-        {
+        elseif (substr($link, 0, 3)=="../") {
             $new_path = $url_parts["path"];
 
             while (substr($link, 0, 3) == "../")
             {
-                $new_path = preg_replace('/\/[^\/]{0,}\/$/',"/", $new_path);
+                $new_path = preg_replace('/\/[^\/]{0,}\/$/', "/", $new_path);
                 $link  = substr($link, 3);
             }
 
@@ -233,14 +238,12 @@ class LinkUtil
 
         // 6. link starts with #
         // -> leads to the same site as we are on, trash
-        elseif (substr($link,0,1) == "#")
-        {
+        elseif (substr($link, 0, 1) == "#") {
             $link="";
         }
 
         // 7. link starts with "?"
-        elseif (substr($link,0,1)=="?")
-        {
+        elseif (substr($link, 0, 1)=="?") {
             $link = $url_parts["protocol"].$url_parts["host"].":".$url_parts["port"].$url_parts["path"].$url_parts["file"].$link;
         }
 
@@ -250,7 +253,8 @@ class LinkUtil
             $link = $url_parts["protocol"].$url_parts["host"].":".$url_parts["port"].$url_parts["path"].$link;
         }
 
-        if ($link == "") return null;
+        if ($link == "") { return null;
+        }
 
         // Now, at least, replace all HTMLENTITIES with normal text.
         // I.E.: HTML-Code of the link is: <a href="index.php?x=1&amp;y=2">
@@ -272,12 +276,12 @@ class LinkUtil
     {
         preg_match("#<{1}[ ]{0,}((?i)base){1}[ ]{1,}((?i)href|src)[ ]{0,}=[ ]{0,}(\"|'){0,1}([^\"'><\n ]{0,})(\"|'|>|<|\n| )# i", $html_source, $match);
 
-        if (isset($match[4]))
-        {
+        if (isset($match[4])) {
             $match[4] = trim($match[4]);
             return $match[4];
         }
-        else return null;
+        else { return null;
+        }
     }
 
 
@@ -286,31 +290,31 @@ class LinkUtil
         // Get redirect-link from header
         preg_match("/((?i)location:|content-location:)(.{0,})[\n]/", $header, $match);
 
-        if (isset($match[2]))
-        {
+        if (isset($match[2])) {
             $redirect = trim($match[2]);
             return $redirect;
         }
-        else return null;
+        else { return null;
+        }
     }
 
     /**
      * Checks whether a given string matches with one of the given regular-expressions.
      *
      * @param &string $string      The string
-     * @param array   $regex_array Numerich array containing the regular-expressions to check against.
+     * @param array  $regex_array Numerich array containing the regular-expressions to check against.
      *
      * @return bool TRUE if one of the regexes matches the string, otherwise FALSE.
      */
     public static function checkStringAgainstRegexArray(&$string, $regex_array)
     {
-        if (count($regex_array) == 0) return true;
+        if (count($regex_array) == 0) { return true;
+        }
 
         $cnt = count($regex_array);
         for ($x=0; $x<$cnt; $x++)
         {
-            if (preg_match($regex_array[$x], $string))
-            {
+            if (preg_match($regex_array[$x], $string)) {
                 return true;
             }
         }
@@ -334,20 +338,20 @@ class LinkUtil
     {
         preg_match("#[\r\n]".$directive.":(.*)[\r\n;]# Ui", $header, $match);
 
-//        var_dump(
-        if (isset($match[1]) && trim($match[1]) != "")
-        {
+        //        var_dump(
+        if (isset($match[1]) && trim($match[1]) != "") {
             return trim($match[1]);
         }
 
-        else return null;
+        else { return null;
+        }
     }
 
 
     /**
      * Returns the normalized root-URL of the given URL
      *
-     * @param string $url The URL, e.g. "www.foo.con/something/index.html"
+     * @param  string $url The URL, e.g. "www.foo.con/something/index.html"
      * @return string The root-URL, e.g. "http://www.foo.com"
      */
     public static function getRootUrl($url)
@@ -361,17 +365,16 @@ class LinkUtil
 
     public static function rmDir($dir)
     {
-        if (is_dir($dir))
-        {
+        if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object)
             {
-                if ($object != "." && $object != "..")
-                {
-                    if (filetype($dir.DIRECTORY_SEPARATOR.$object) == "dir")
+                if ($object != "." && $object != "..") {
+                    if (filetype($dir.DIRECTORY_SEPARATOR.$object) == "dir") {
                         self::rmDir($dir.DIRECTORY_SEPARATOR.$object);
-                    else
+                    } else {
                         unlink($dir.DIRECTORY_SEPARATOR.$object);
+                    }
                 }
             }
             reset($objects);
@@ -395,12 +398,12 @@ class LinkUtil
      */
     public static function deserializeFromFile($file)
     {
-        if (file_exists($file))
-        {
+        if (file_exists($file)) {
             $serialized_data = file_get_contents($file);
             return unserialize($serialized_data);
         }
-        else return null;
+        else { return null;
+        }
     }
 
     public static function sort2dArray(&$array, $sort_args)
@@ -415,8 +418,7 @@ class LinkUtil
             {
 
                 // Ist das Argument ein String, sprich ein Sortier-Feld?
-                if (is_string($args[$x]))
-                {
+                if (is_string($args[$x])) {
                     $value = $array[$field][$args[$x]];
 
                     ${$args[$x]}[] = $value;
@@ -428,8 +430,7 @@ class LinkUtil
         for ($x=1; $x<count($args); $x++)
         {
 
-            if (is_string($args[$x]))
-            {
+            if (is_string($args[$x])) {
                 // Argument ist ein TMP-Array
                 $params[] = &${$args[$x]};
 
@@ -466,18 +467,19 @@ class LinkUtil
     /**
      * Gets all meta-tag atteributes from the given HTML-source.
      *
-     * @param &string &$html_source
+     * @param  &string &$html_source
      * @return array Assoziative array conatining all found meta-attributes.
      *               The keys are the meta-names, the values the content of the attributes.
      *               (like $tags["robots"] = "nofollow")
-     *
      */
     public static function getMetaTagAttributes(&$html_source)
     {
-        preg_match_all("#<\s*meta\s+".
+        preg_match_all(
+            "#<\s*meta\s+".
             "name\s*=\s*(?|\"([^\"]+)\"|'([^']+)'|([^\s><'\"]+))\s+".
             "content\s*=\s*(?|\"([^\"]+)\"|'([^']+)'|([^\s><'\"]+))".
-            ".*># Uis", $html_source, $matches);
+            ".*># Uis", $html_source, $matches
+        );
 
         $tags = array();
         for ($x=0; $x<count($matches[0]); $x++)
@@ -494,13 +496,14 @@ class LinkUtil
     /**
      * Checks whether the given string is a valid, urlencoded URL (by RFC)
      *
-     * @param string $string The string
+     * @param  string $string The string
      * @return bool TRUE if the string is a valid url-string.
      */
     public static function isValidUrlString($string)
     {
-        if (preg_match("#^[a-z0-9/.&=?%-_.!~*'()]+$# i", $string)) return true;
-        else return false;
+        if (preg_match("#^[a-z0-9/.&=?%-_.!~*'()]+$# i", $string)) { return true;
+        } else { return false;
+        }
     }
 
 }

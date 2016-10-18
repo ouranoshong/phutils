@@ -4,6 +4,7 @@
  * User: hong
  * Date: 9/29/16
  * Time: 3:47 PM
+ * version: php5.6
  */
 
 namespace PhUtils;
@@ -36,18 +37,18 @@ class Benchmark
 
     /**
      * @param      $identifier
-     * @param bool $temporary_benchmark
+     * @param bool       $temporary_benchmark
      */
     public static function start($identifier, $temporary_benchmark = false)
     {
         self::$benchmark_start_times[$identifier] = self::getMicrotime();
 
-        if (isset(self::$benchmark_start_count[$identifier]))
+        if (isset(self::$benchmark_start_count[$identifier])) {
             self::$benchmark_start_count[$identifier] = self::$benchmark_start_count[$identifier] + 1;
-        else self::$benchmark_start_count[$identifier] = 1;
+        } else { self::$benchmark_start_count[$identifier] = 1;
+        }
 
-        if ($temporary_benchmark == true)
-        {
+        if ($temporary_benchmark == true) {
             self::$temporary_benchmarks[$identifier] = true;
         }
     }
@@ -70,12 +71,12 @@ class Benchmark
      */
     public static function stop($identifier)
     {
-        if (isset(self::$benchmark_start_times[$identifier]))
-        {
+        if (isset(self::$benchmark_start_times[$identifier])) {
             $elapsed_time = self::getMicrotime() - self::$benchmark_start_times[$identifier];
 
-            if (isset(self::$benchmark_results[$identifier])) self::$benchmark_results[$identifier] += $elapsed_time;
-            else self::$benchmark_results[$identifier] = $elapsed_time;
+            if (isset(self::$benchmark_results[$identifier])) { self::$benchmark_results[$identifier] += $elapsed_time;
+            } else { self::$benchmark_results[$identifier] = $elapsed_time;
+            }
 
             return $elapsed_time;
         }
@@ -90,8 +91,7 @@ class Benchmark
      */
     public static function getElapsedTime($identifier)
     {
-        if (isset(self::$benchmark_results[$identifier]))
-        {
+        if (isset(self::$benchmark_results[$identifier])) {
             return self::$benchmark_results[$identifier];
         }
 
@@ -104,8 +104,7 @@ class Benchmark
      */
     public static function reset($identifier)
     {
-        if (isset(self::$benchmark_results[$identifier]))
-        {
+        if (isset(self::$benchmark_results[$identifier])) {
             self::$benchmark_results[$identifier] = 0;
         }
     }
@@ -116,8 +115,7 @@ class Benchmark
     public static function resetAll($retain_benchmarks = array())
     {
         // If no benchmarks should be retained
-        if (count($retain_benchmarks) == 0)
-        {
+        if (count($retain_benchmarks) == 0) {
             self::$benchmark_results = array();
             return;
         }
@@ -126,8 +124,7 @@ class Benchmark
         @reset(self::$benchmark_results);
         while (list($identifier) = @each(self::$benchmark_results))
         {
-            if (!in_array($identifier, $retain_benchmarks))
-            {
+            if (!in_array($identifier, $retain_benchmarks)) {
                 self::$benchmark_results[$identifier] = 0;
             }
         }
@@ -141,7 +138,8 @@ class Benchmark
         @reset(self::$benchmark_results);
         while (list($identifier, $elapsed_time) = @each(self::$benchmark_results))
         {
-            if (!isset(self::$temporary_benchmarks[$identifier])) echo $identifier.": ".$elapsed_time." sec" . $linebreak;
+            if (!isset(self::$temporary_benchmarks[$identifier])) { echo $identifier.": ".$elapsed_time." sec" . $linebreak;
+            }
         }
     }
 
@@ -157,7 +155,8 @@ class Benchmark
         @reset(self::$benchmark_results);
         while (list($identifier, $elapsed_time) = @each(self::$benchmark_results))
         {
-            if (!isset(self::$temporary_benchmarks[$identifier])) $benchmarks[$identifier] = $elapsed_time;
+            if (!isset(self::$temporary_benchmarks[$identifier])) { $benchmarks[$identifier] = $elapsed_time;
+            }
         }
 
         return $benchmarks;
@@ -176,7 +175,8 @@ class Benchmark
     /**
      * @return array
      */
-    public static function getTemporary(){
+    public static function getTemporary()
+    {
         return self::$temporary_benchmarks;
     }
 }

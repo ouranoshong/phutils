@@ -21,7 +21,8 @@ class EncodingUtil
      *
      * @return string
      */
-    public static function decodeGZipContent($content) {
+    public static function decodeGZipContent($content) 
+    {
         return gzinflate(substr($content, 10, -8));
     }
 
@@ -30,7 +31,8 @@ class EncodingUtil
      *
      * @return bool
      */
-    public static function isGzipEncoded($content) {
+    public static function isGzipEncoded($content) 
+    {
         return substr($content, 0, 3) === "\x1f\x8b\x08";
     }
 
@@ -40,7 +42,7 @@ class EncodingUtil
      * Taken from http://www.php.net/manual/de/function.mb-detect-encoding.php
      * (comment from "prgss at bk dot ru")
      *
-     * @param string $string The string
+     * @param  string $string The string
      * @return bool TRUE if the string is UTF-8 encoded.
      */
     public static function isUtf8String($string)
@@ -53,7 +55,7 @@ class EncodingUtil
     /**
      * Decodes all HTML-entities in the given string including numeric and hexadecimal character references
      *
-     * @param string $string
+     * @param  string $string
      * @return string
      */
     public static function decodeHtmlEntities($string)
@@ -83,10 +85,18 @@ class EncodingUtil
         $string = preg_replace($entities, $entitie_replacements, $string);
 
         // Numeric haracter reference replacement (non-HEX), like &#64; => "@"
-        $string = preg_replace_callback("/&#([0-9]{1,4});/ i", function($m) {return chr($m[1]);}, $string);
+        $string = preg_replace_callback(
+            "/&#([0-9]{1,4});/ i", function ($m) {
+                return chr($m[1]);
+            }, $string
+        );
 
         // Numeric character reference replacement (HEX), like &#x2f; => "/"
-        $string = preg_replace_callback("/&#x([0-9a-z]{2,4});/ i", function($m) {return chr(hexdec($m[1]));}, $string);
+        $string = preg_replace_callback(
+            "/&#x([0-9a-z]{2,4});/ i", function ($m) {
+                return chr(hexdec($m[1]));
+            }, $string
+        );
 
         return $string;
     }
