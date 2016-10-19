@@ -5,8 +5,16 @@
 # phutils
 a utils component collection
 
+## Installation
+
+```bash
+   composer require phutils/phutils
+```
+
 # Collections
 * Benchmark
 * DNSUtil
 * EncodingUtil
 * LinkUtil
+
+
