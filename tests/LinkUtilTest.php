@@ -27,6 +27,8 @@ class LinkUtilTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('query', $parts);
         $this->assertArrayHasKey('fragment', $parts);
 
+        $this->assertNotEmpty(\PhUtils\LinkUtil::parse('www.baidu.com'));
+
     }
 
     /**
@@ -36,6 +38,15 @@ class LinkUtilTest extends \PHPUnit\Framework\TestCase
         $uri = \PhUtils\LinkUtil::buildURLFromParts(\PhUtils\LinkUtil::parse($this->uri));
 
         $this->assertEquals($this->uri , $uri);
+
+        try {
+            \PhUtils\LinkUtil::buildURLFromParts([]);
+        } catch (\Exception $e) {
+            $this->assertEquals('Cannot generate URL, host not specified!', $e->getMessage());
+        }
+
+        $uri2 = \PhUtils\LinkUtil::buildURLFromParts(['host'=> 'baidu.com']);
+        $this->assertEquals('http://baidu.com:80', $uri2);
     }
 
     /**

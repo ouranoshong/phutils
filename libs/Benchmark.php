@@ -79,7 +79,7 @@ class Benchmark
             return $elapsed_time;
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -108,14 +108,14 @@ class Benchmark
 
     /**
      * @param array $retain_benchmarks
+     * @return mixed
      */
     public static function resetAll($retain_benchmarks = array())
     {
         // If no benchmarks should be retained
         if (count($retain_benchmarks) == 0) {
             self::$benchmark_results = array();
-
-            return;
+            return null;
         }
 
         // Else reset all benchmarks BUT the retain_benachmarks
