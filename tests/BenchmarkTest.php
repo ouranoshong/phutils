@@ -72,6 +72,12 @@ class BenchmarkTest extends TestCase
 
         $this->assertNotNull(Benchmark::getElapsedTime($identify));
 
+
+        Benchmark::start($identify);
+        $elapsedTime2 = Benchmark::stop($identify);
+
+        $this->assertNotNull($elapsedTime2);
+
         $result = Benchmark::stop('noExists');
 
         $this->assertNull($result);
@@ -123,6 +129,22 @@ class BenchmarkTest extends TestCase
         Benchmark::resetAll(['test3']);
 
         $this->assertEquals(0, Benchmark::getElapsedTime('willClear'));
+    }
+
+    public function testPrintAllBenchmarks() {
+
+        Benchmark::resetAll();
+
+        $identity = 'test';
+
+        Benchmark::start($identity);
+        Benchmark::stop($identity);
+
+        ob_start();
+        Benchmark::printAllBenchmarks();
+        $content = ob_end_clean();
+
+        $this->assertNotEmpty($content);
     }
 
 }

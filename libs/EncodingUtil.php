@@ -60,7 +60,7 @@ class EncodingUtil
     public static function decodeHtmlEntities($string)
     {
         // Entities-replacements
-        $entities = array("'&(quot|#34);'i",
+        $entities = ["'&(quot|#34);'i",
             "'&(amp|#38);'i",
             "'&(lt|#60);'i",
             "'&(gt|#62);'i",
@@ -68,9 +68,9 @@ class EncodingUtil
             "'&(iexcl|#161);'i",
             "'&(cent|#162);'i",
             "'&(pound|#163);'i",
-            "'&(copy|#169);'i", );
+            "'&(copy|#169);'i"];
 
-        $entitie_replacements = array('"',
+        $entity_replacements = array('"',
             '&',
             '<',
             '>',
@@ -80,7 +80,8 @@ class EncodingUtil
             chr(163),
             chr(169), );
 
-        $string = preg_replace($entities, $entitie_replacements, $string);
+        $string = preg_replace($entities, $entity_replacements, $string);
+
 
         // Numeric haracter reference replacement (non-HEX), like &#64; => "@"
         $string = preg_replace_callback(

@@ -19,10 +19,6 @@ class LinkUtil
 
         $parts = @parse_url($url);
 
-        if (!isset($parts)) {
-            return;
-        }
-
         $protocol = $parts['scheme'].'://';
         $host = (isset($parts['host']) ? $parts['host'] : '');
         $path = (isset($parts['path']) ? $parts['path'] : '');
@@ -102,7 +98,7 @@ class LinkUtil
     {
         // Host has to be set aat least
         if (!isset($url_parts['host'])) {
-            throw new Exception('Cannot generate URL, host not specified!');
+            throw new \Exception('Cannot generate URL, host not specified!');
         }
 
         if (!isset($url_parts['protocol']) || $url_parts['protocol'] == '') {

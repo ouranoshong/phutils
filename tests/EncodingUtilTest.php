@@ -61,6 +61,9 @@ class EncodingUtilTest extends \PHPUnit\Framework\TestCase
         //copyright
         $this->assertEquals(chr(169), \PhUtils\EncodingUtil::decodeHtmlEntities('&copy;'));
         $this->assertEquals(chr(169), \PhUtils\EncodingUtil::decodeHtmlEntities('&#169;'));
+
+        $this->assertEquals('@', \PhUtils\EncodingUtil::decodeHtmlEntities('&#64;'));
+        $this->assertEquals('/', \PhUtils\EncodingUtil::decodeHtmlEntities('&#x2f;'));
     }
 
 }
